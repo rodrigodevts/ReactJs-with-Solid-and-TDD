@@ -1,9 +1,5 @@
-
-
 function App() {
-  return (
-    <h2>Hello World</h2>
-  )
+  return <h2>Hello World</h2>;
 }
 
-export default App
+export default App;

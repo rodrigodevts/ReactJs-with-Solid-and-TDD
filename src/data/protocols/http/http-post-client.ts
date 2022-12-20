@@ -1,5 +1,5 @@
 interface HttpPostClient {
-  post(url: string): Promise<void>;
+  post: (url: string) => Promise<void>;
 }
 
-export { HttpPostClient }
+export { HttpPostClient };

@@ -8,13 +8,15 @@ module.exports = {
     'plugin:react/recommended',
     'standard-with-typescript',
     "prettier",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    'plugin:react/jsx-runtime'
   ],
   overrides: [
   ],
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
+    project: ['tsconfig.json'],
   },
   plugins: [
     'react',
@@ -22,5 +24,8 @@ module.exports = {
   ],
   rules: {
     "prettier/prettier": "error",
+    '@typescript-eslint/triple-slash-reference': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/consistent-type-definitions': 'off',
   }
 }

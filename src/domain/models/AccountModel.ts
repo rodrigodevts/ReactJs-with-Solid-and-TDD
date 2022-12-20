@@ -1,5 +1,5 @@
-type AccountModel = {
+interface AccountModel {
   accessToken: string;
 }
 
-export { AccountModel }
+export { AccountModel };
