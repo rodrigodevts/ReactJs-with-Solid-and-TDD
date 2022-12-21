@@ -3,11 +3,15 @@ import { HttpStatusCode } from "@/data/protocols/http/http-response";
 import { IAuthenticationParams } from "@/domain/useCases/IAuthentication";
 import { HttpPostClient } from "@/data/protocols/http/http-post-client";
 import { UnexpectedError } from "@/domain/errors/unexpected-error";
+import { AccountModel } from "@/domain/models/AccountModel";
 
 class RemoteAuthentication {
   constructor(
     private readonly url: string,
-    private readonly httpPostClient: HttpPostClient
+    private readonly httpPostClient: HttpPostClient<
+      IAuthenticationParams,
+      AccountModel
+    >
   ) {
     console.log(1);
   }
