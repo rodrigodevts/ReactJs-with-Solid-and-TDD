@@ -4,7 +4,6 @@ module.exports = {
     es2021: true,
     jest: true,
   },
-  // parser: "@typescript-eslint/parser",
   extends: [
     'plugin:react/recommended',
     'standard-with-typescript',
@@ -29,9 +28,4 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off',
   },
-  // settings: {
-  //   "react": {
-  //     "version": "detect",
-  //   },
-  // }
 }
