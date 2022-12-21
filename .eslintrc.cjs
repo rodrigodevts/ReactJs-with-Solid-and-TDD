@@ -23,9 +23,13 @@ module.exports = {
     'prettier',
   ],
   rules: {
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", {
+
+    }],
     '@typescript-eslint/triple-slash-reference': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/prefer-nullish-coalescing': 'off',
   },
 }
