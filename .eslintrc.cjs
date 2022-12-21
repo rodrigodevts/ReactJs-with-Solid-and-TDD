@@ -4,19 +4,20 @@ module.exports = {
     es2021: true,
     jest: true,
   },
+  // parser: "@typescript-eslint/parser",
   extends: [
     'plugin:react/recommended',
     'standard-with-typescript',
     "prettier",
     "plugin:prettier/recommended",
-    'plugin:react/jsx-runtime'
+    'plugin:react/jsx-runtime',
   ],
   overrides: [
   ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['tsconfig.json'],
+    project: './tsconfig.json'
   },
   plugins: [
     'react',
@@ -27,5 +28,10 @@ module.exports = {
     '@typescript-eslint/triple-slash-reference': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off',
-  }
+  },
+  // settings: {
+  //   "react": {
+  //     "version": "detect",
+  //   },
+  // }
 }

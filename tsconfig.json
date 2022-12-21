@@ -16,12 +16,19 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-    // "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": "src",
+    "paths": {
+      "@/*": [
+        "*"
+      ]
+    },
   },
   "include": [
-    "src"
+    "src",
+    "jest.config.ts",
+    ".eslintrc.js"
   ],
   "references": [
     {
