@@ -26,7 +26,6 @@ module.exports = {
     "prettier/prettier": ["error", {
       'singleQuote': true,
       'semi': true,
-      // 'parser': 'flow'
     }],
     '@typescript-eslint/triple-slash-reference': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
