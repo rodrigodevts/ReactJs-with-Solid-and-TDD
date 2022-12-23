@@ -12,6 +12,7 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
@@ -23,7 +24,8 @@
   "include": [
     "src",
     "jest.config.ts",
-    ".eslintrc.js"
+    ".eslintrc.js",
+    "vite.config.ts"
   ],
   "references": [
     {

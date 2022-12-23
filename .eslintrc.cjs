@@ -27,6 +27,7 @@ module.exports = {
       'singleQuote': true,
       'semi': true,
     }],
+    "@typescript-eslint/consistent-indexed-object-style": "off",
     '@typescript-eslint/triple-slash-reference': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off',
