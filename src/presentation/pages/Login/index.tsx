@@ -1,4 +1,5 @@
 import Footer from '@/presentation/components/footer';
+import FormStatus from '@/presentation/components/form-status';
 import Input from '@/presentation/components/input';
 import Header from '@/presentation/components/login-header';
 import Spinner from '@/presentation/components/spinner';
@@ -16,9 +17,7 @@ function Login() {
           {/* Entrar */}
           <Spinner />
         </button>
-        <div className="errorWrap">
-          <span className="error">Erro</span>
-        </div>
+        <FormStatus />
         <span className="createCountLink">Criar conta</span>
       </form>
       <Footer />

@@ -1,0 +1,13 @@
+@import '../../styles/colors.scss';
+
+.errorWrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .error {
+    font-size: 12px;
+    color: $primaryLight;
+  }
+}
