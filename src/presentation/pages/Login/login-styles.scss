@@ -51,24 +51,6 @@ button {
   width: 100%;
   height: 100vh;
 
-  .header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-top: 40px solid $primaryDark;
-
-    background-color: $primary;
-
-    img {
-      margin-top: 40px;
-    }
-
-    h1 {
-      color: $white;
-      margin: 16px 0px;
-    }
-  }
-
   .form {
     display: flex;
     flex-direction: column;
@@ -134,10 +116,5 @@ button {
         color: $primaryLight;
       }
     }
-  }
-
-  .footer {
-    background-color: $primary;
-    height: 48px;
   }
 }
