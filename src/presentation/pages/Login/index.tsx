@@ -1,14 +1,17 @@
-import Footer from '@/presentation/components/footer';
-import FormStatus from '@/presentation/components/form-status';
-import Input from '@/presentation/components/input';
-import Header from '@/presentation/components/login-header';
-import Spinner from '@/presentation/components/spinner';
+import {
+  Footer,
+  FormStatus,
+  Input,
+  LoginHeader,
+  Spinner,
+} from '@/presentation/components';
+
 import './login-styles.scss';
 
 function Login() {
   return (
     <div className="login">
-      <Header />
+      <LoginHeader />
       <form action="" className="form">
         <h2>Login</h2>
         <Input type="email" name="email" placeholder="Digite seu e-mail" />

@@ -1,4 +1,4 @@
-import Login from '@/presentation/pages/Login';
+import { Login } from '@/presentation/pages';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
