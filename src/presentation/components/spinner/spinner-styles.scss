@@ -1,17 +1,18 @@
+@import '../../styles/colors.scss';
+
 .spinner {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
+  display: contents;
+  width: 12px;
+  height: 12px;
 
   &:after {
     content: " ";
     display: block;
-    width: 64px;
-    height: 64px;
-    margin: 8px;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
-    border: 6px solid #fff;
-    border-color: #fff transparent #fff transparent;
+    border: 3px solid $primaryVeryLight;
+    border-color: $primaryVeryLight transparent $primaryVeryLight transparent;
     animation: spinner 1.2s linear infinite;
   }
 }

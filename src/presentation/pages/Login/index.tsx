@@ -1,3 +1,4 @@
+import Spinner from '@/presentation/components/spinner';
 import './login-styles.scss';
 
 function Login() {
@@ -26,10 +27,11 @@ function Login() {
         </div>
         <button className="buttonSubmit" type="submit">
           {/* Entrar */}
-          <div className="errorWrap">
-            <span className="error">Erro</span>
-          </div>
+          <Spinner />
         </button>
+        <div className="errorWrap">
+          <span className="error">Erro</span>
+        </div>
         <span className="createCountLink">Criar conta</span>
       </form>
       <footer className="footer" />
