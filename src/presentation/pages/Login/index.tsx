@@ -7,8 +7,9 @@ import {
   Spinner,
 } from '@/presentation/components';
 
-import './login-styles.scss';
 import { FormContext } from '@/presentation/contexts/formContext';
+
+import './login-styles.scss';
 
 type StateProps = {
   isLoading: boolean;
@@ -34,9 +35,10 @@ function Login() {
             placeholder="Digite sua senha"
           />
           <button
-            data-testid="spinner-loading"
+            data-testid="button-submit"
             className="buttonSubmit"
             type="submit"
+            disabled
           >
             {state.isLoading ? <Spinner /> : 'Entrar'}
           </button>

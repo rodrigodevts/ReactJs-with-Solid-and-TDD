@@ -14,7 +14,7 @@ const Input: React.FC<Props> = (props: Props) => {
   return (
     <div className="inputWrap">
       <input {...props} readOnly onFocus={enableInput} />
-      <span className="status">✅</span>
+      <span className="status">🛑</span>
     </div>
   );
 };
