@@ -11,21 +11,20 @@ import { FormContext } from '@/presentation/contexts/formContext';
 
 import './login-styles.scss';
 
-type StateProps = {
-  isLoading: boolean;
-  errorMessage: string;
-};
-
 function Login() {
-  const [state] = useState<StateProps>({
+  const [state] = useState({
     isLoading: false,
-    errorMessage: '',
+  });
+  const [errorState] = useState({
+    main: '',
+    email: 'Campo obrigatório',
+    password: 'Campo obrigatório',
   });
 
   return (
     <div className="login">
       <LoginHeader />
-      <FormContext.Provider value={state}>
+      <FormContext.Provider value={{ state, errorState }}>
         <form action="" className="form">
           <h2>Login</h2>
           <Input type="email" name="email" placeholder="Digite seu e-mail" />
