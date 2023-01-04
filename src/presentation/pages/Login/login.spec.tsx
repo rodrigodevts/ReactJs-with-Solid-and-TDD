@@ -1,4 +1,4 @@
-import { Validation } from '@/presentation/protocols/validation';
+import { ValidationSpy } from '@/presentation/test/mock-validation';
 import {
   render,
   RenderResult,
@@ -11,18 +11,6 @@ type SutTypes = {
   sut: RenderResult;
   validationSpy: ValidationSpy;
 };
-
-class ValidationSpy implements Validation {
-  errorMessage: string;
-  fieldName: string;
-  fieldValue: string;
-
-  validate(fieldName: string, fieldValue: string) {
-    this.fieldName = fieldName;
-    this.fieldValue = fieldValue;
-    return this.errorMessage;
-  }
-}
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy();
