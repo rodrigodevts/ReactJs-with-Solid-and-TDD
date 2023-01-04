@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Login } from '@/presentation/pages';
-import { ValidationSpy } from '@/presentation/test/mock-validation';
+import { ValidationStub } from '@/presentation/test/mock-validation';
 
 const Router: React.FC = () => {
-  const validationSpy = new ValidationSpy();
+  const validationStub = new ValidationStub();
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login validation={validationSpy} />} />
+        <Route path="/login" element={<Login validation={validationStub} />} />
       </Routes>
     </BrowserRouter>
   );
