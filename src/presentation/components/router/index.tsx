@@ -4,10 +4,12 @@ import { Validation } from '@/presentation/protocols/validation';
 
 class ValidationSpy implements Validation {
   errorMessage: string;
-  input: object;
+  fieldName: string;
+  fieldValue: string;
 
-  validate(input: object) {
-    this.input = input;
+  validate(fieldName: string, fieldValue: string) {
+    this.fieldName = fieldName;
+    this.fieldValue = fieldValue;
     return this.errorMessage;
   }
 }
