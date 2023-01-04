@@ -50,7 +50,7 @@ function Login({ validation }: LoginProps) {
             data-testid="button-submit"
             className="buttonSubmit"
             type="submit"
-            disabled
+            disabled={!!(state.emailError || state.passwordError)}
           >
             {state.isLoading ? <Spinner /> : 'Entrar'}
           </button>
