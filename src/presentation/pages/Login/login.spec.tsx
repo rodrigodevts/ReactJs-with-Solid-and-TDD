@@ -52,7 +52,7 @@ describe('Login component', () => {
     expect(passwordStatus.textContent).toBe('🛑');
   });
 
-  test('Should call validation with correct values', () => {
+  test('Should call validation with correct email', () => {
     const { sut, validationSpy } = makeSut();
 
     const emailInput = sut.getByTestId('email');
@@ -64,6 +64,21 @@ describe('Login component', () => {
 
     expect(validationSpy.input).toEqual({
       email: 'any_email',
+    });
+  });
+
+  test('Should call validation with correct password', () => {
+    const { sut, validationSpy } = makeSut();
+
+    const passwordInput = sut.getByTestId('password');
+    fireEvent.input(passwordInput, {
+      target: {
+        value: 'any_password',
+      },
+    });
+
+    expect(validationSpy.input).toEqual({
+      password: 'any_password',
     });
   });
 });
