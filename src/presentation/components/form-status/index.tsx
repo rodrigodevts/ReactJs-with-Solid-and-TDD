@@ -3,13 +3,12 @@ import { FormContext } from '@/presentation/contexts/formContext';
 import './form-status-styles.scss';
 
 const FormStatus: React.FC = () => {
-  const {
-    errorState: { main },
-  } = useContext(FormContext);
+  const { state } = useContext(FormContext);
+  const { mainError } = state;
 
   return (
     <div data-testid="error-wrap" className="errorWrap">
-      {main && <span className="error">{main}</span>}
+      {mainError && <span className="error">{mainError}</span>}
     </div>
   );
 };
