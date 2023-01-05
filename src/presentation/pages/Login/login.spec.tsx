@@ -6,22 +6,9 @@ import {
   cleanup,
 } from '@testing-library/react';
 
-import { AccountModel } from '@/domain/models';
-import { Authentication, AuthenticationParams } from '@/domain/useCases';
 import { ValidationStub } from '@/presentation/test/mock-validation';
-
+import { AuthenticationSpy } from '@/presentation/test/mock-authentication';
 import Login from '.';
-import { mockAccountModel } from '@/domain/test';
-
-class AuthenticationSpy implements Authentication {
-  account = mockAccountModel();
-  params: AuthenticationParams;
-
-  async auth(params: AuthenticationParams): Promise<AccountModel> {
-    this.params = params;
-    return await Promise.resolve(this.account);
-  }
-}
 
 type SutTypes = {
   sut: RenderResult;
