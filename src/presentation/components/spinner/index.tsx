@@ -1,7 +1,7 @@
 import './spinner-styles.scss';
 
 const Spinner: React.FC = () => {
-  return <div className="spinner"></div>;
+  return <div data-testid="spinner" className="spinner"></div>;
 };
 
 export default Spinner;

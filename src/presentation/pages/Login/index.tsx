@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Footer,
   FormStatus,
@@ -34,11 +34,17 @@ function Login({ validation }: LoginProps) {
     });
   }, [state.email, state.password]);
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+
+    setState({ ...state, isLoading: true });
+  };
+
   return (
     <div className="login">
       <LoginHeader />
       <FormContext.Provider value={{ state, setState }}>
-        <form action="" className="form">
+        <form className="form" onSubmit={handleSubmit}>
           <h2>Login</h2>
           <Input type="email" name="email" placeholder="Digite seu e-mail" />
           <Input
