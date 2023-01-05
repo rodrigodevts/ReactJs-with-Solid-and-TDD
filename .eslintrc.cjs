@@ -35,6 +35,7 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
     'react/jsx-uses-react': 'error',
     'react/jsx-uses-vars': 'error',
+    '@typescript-eslint/no-misused-promises': 'off',
   },
   settings: {
     "react": {
