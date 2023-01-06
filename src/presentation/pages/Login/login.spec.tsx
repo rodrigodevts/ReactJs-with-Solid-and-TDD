@@ -6,11 +6,12 @@ import {
   cleanup,
   waitFor,
 } from '@testing-library/react';
+import 'jest-localstorage-mock';
 
 import { ValidationStub } from '@/presentation/test/mock-validation';
 import { AuthenticationSpy } from '@/presentation/test/mock-authentication';
-import Login from '.';
 import { InvalidCredentialsError } from '@/domain/errors';
+import Login from '.';
 
 type SutTypes = {
   sut: RenderResult;
@@ -76,6 +77,9 @@ const simulateStatusForField = (
 
 describe('Login component', () => {
   afterEach(cleanup);
+  beforeEach(() => {
+    localStorage.clear();
+  });
 
   test('Should start with initial state', () => {
     const validationError = faker.random.words();
@@ -180,18 +184,15 @@ describe('Login component', () => {
     expect(spinnerRunningInButton.textContent).toBe('Entrar');
   });
 
-  test('Should present error if Authentication fails', async () => {
+  test('Should add accessToken to localStorage on success', async () => {
     const { sut, authenticationSpy } = makeSut();
-    const error = new InvalidCredentialsError();
-    jest
-      .spyOn(authenticationSpy, 'auth')
-      .mockReturnValueOnce(Promise.reject(error));
     simulateValidSubmit(sut);
     await waitFor(() => {
-      const mainError = sut.getByTestId('main-error');
-      expect(mainError.textContent).toBe(error.message);
+      sut.getByTestId('login-form');
     });
-    const spinnerRunningInButton = sut.getByTestId('button-submit');
-    expect(spinnerRunningInButton.textContent).toBe('Entrar');
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'react-solid@accessToken',
+      authenticationSpy.account.accessToken
+    );
   });
 });
