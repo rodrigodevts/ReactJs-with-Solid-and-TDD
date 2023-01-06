@@ -179,4 +179,19 @@ describe('Login component', () => {
     const spinnerRunningInButton = sut.getByTestId('button-submit');
     expect(spinnerRunningInButton.textContent).toBe('Entrar');
   });
+
+  test('Should present error if Authentication fails', async () => {
+    const { sut, authenticationSpy } = makeSut();
+    const error = new InvalidCredentialsError();
+    jest
+      .spyOn(authenticationSpy, 'auth')
+      .mockReturnValueOnce(Promise.reject(error));
+    simulateValidSubmit(sut);
+    await waitFor(() => {
+      const mainError = sut.getByTestId('main-error');
+      expect(mainError.textContent).toBe(error.message);
+    });
+    const spinnerRunningInButton = sut.getByTestId('button-submit');
+    expect(spinnerRunningInButton.textContent).toBe('Entrar');
+  });
 });
