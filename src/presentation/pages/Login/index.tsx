@@ -9,9 +9,10 @@ import {
 
 import { FormContext } from '@/presentation/contexts/formContext';
 
-import './login-styles.scss';
 import { Validation } from '@/presentation/protocols/validation';
 import { Authentication } from '@/domain/useCases';
+
+import './login-styles.scss';
 
 type LoginProps = {
   validation: Validation;
@@ -41,15 +42,20 @@ function Login({ validation, authentication }: LoginProps) {
   ): Promise<void> => {
     event.preventDefault();
 
-    if (state.isLoading || state.emailError || state.passwordError) {
-      return;
-    }
+    try {
+      if (state.isLoading || state.emailError || state.passwordError) {
+        return;
+      }
 
-    setState({ ...state, isLoading: true });
-    await authentication.auth({
-      email: state.email,
-      password: state.password,
-    });
+      setState({ ...state, isLoading: true });
+
+      await authentication.auth({
+        email: state.email,
+        password: state.password,
+      });
+    } catch (error) {
+      setState({ ...state, isLoading: false, mainError: error.message });
+    }
   };
 
   return (
