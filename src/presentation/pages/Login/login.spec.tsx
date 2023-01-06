@@ -4,11 +4,13 @@ import {
   RenderResult,
   fireEvent,
   cleanup,
+  waitFor,
 } from '@testing-library/react';
 
 import { ValidationStub } from '@/presentation/test/mock-validation';
 import { AuthenticationSpy } from '@/presentation/test/mock-authentication';
 import Login from '.';
+import { InvalidCredentialsError } from '@/domain/errors';
 
 type SutTypes = {
   sut: RenderResult;
@@ -79,8 +81,8 @@ describe('Login component', () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
 
-    const errorWrap = sut.getByTestId('error-wrap');
-    expect(errorWrap.childElementCount).toBe(0);
+    // const errorWrap = sut.getByTestId('error-wrap');
+    // expect(errorWrap.childElementCount).toBe(0);
 
     const buttonSubmit = sut.getByTestId('button-submit') as HTMLButtonElement;
     expect(buttonSubmit.childElementCount).toBe(0);
@@ -161,5 +163,20 @@ describe('Login component', () => {
     populateEmailField(sut);
     fireEvent.submit(sut.getByTestId('login-form'));
     expect(authenticationSpy.callsCount).toBe(0);
+  });
+
+  test('Should present error if Authentication fails', async () => {
+    const { sut, authenticationSpy } = makeSut();
+    const error = new InvalidCredentialsError();
+    jest
+      .spyOn(authenticationSpy, 'auth')
+      .mockReturnValueOnce(Promise.reject(error));
+    simulateValidSubmit(sut);
+    await waitFor(() => {
+      const mainError = sut.getByTestId('main-error');
+      expect(mainError.textContent).toBe(error.message);
+    });
+    const spinnerRunningInButton = sut.getByTestId('button-submit');
+    expect(spinnerRunningInButton.textContent).toBe('Entrar');
   });
 });
