@@ -13,6 +13,7 @@ import { Validation } from '@/presentation/protocols/validation';
 import { Authentication } from '@/domain/useCases';
 
 import './login-styles.scss';
+import { Link } from 'react-router-dom';
 
 type LoginProps = {
   validation: Validation;
@@ -80,7 +81,9 @@ function Login({ validation, authentication }: LoginProps) {
             {state.isLoading ? <Spinner /> : 'Entrar'}
           </button>
           <FormStatus />
-          <span className="createCountLink">Criar conta</span>
+          <Link data-testid="signup" to="/signup" className="createCountLink">
+            Criar conta
+          </Link>
         </form>
       </FormContext.Provider>
       <Footer />
