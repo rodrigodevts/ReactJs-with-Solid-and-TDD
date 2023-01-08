@@ -13,7 +13,7 @@ import { Validation } from '@/presentation/protocols/validation';
 import { Authentication } from '@/domain/useCases';
 
 import './login-styles.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 type LoginProps = {
   validation: Validation;
@@ -29,6 +29,8 @@ function Login({ validation, authentication }: LoginProps) {
     passwordError: '',
     mainError: '',
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setState({
@@ -55,6 +57,7 @@ function Login({ validation, authentication }: LoginProps) {
         password: state.password,
       });
       localStorage.setItem('react-solid@accessToken', account.accessToken);
+      navigate('/', { replace: true });
     } catch (error) {
       setState({ ...state, isLoading: false, mainError: error.message });
     }
