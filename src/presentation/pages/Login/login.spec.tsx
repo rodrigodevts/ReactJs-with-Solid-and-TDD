@@ -24,7 +24,7 @@ type SutParams = {
   validationError: string;
 };
 
-const history = createMemoryHistory();
+const history = createMemoryHistory({ initialEntries: ['/login'] });
 
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
@@ -91,9 +91,8 @@ describe('Login component', () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
 
-    // const errorWrap = sut.getByTestId('error-wrap');
-    // expect(errorWrap.childElementCount).toBe(0);
-
+    const errorWrap = sut.getByTestId('error-wrap');
+    expect(errorWrap.childElementCount).toBe(0);
     const buttonSubmit = sut.getByTestId('button-submit') as HTMLButtonElement;
     expect(buttonSubmit.childElementCount).toBe(0);
     expect(buttonSubmit.disabled).toBe(true);
@@ -200,6 +199,8 @@ describe('Login component', () => {
       'react-solid@accessToken',
       authenticationSpy.account.accessToken
     );
+    expect(history.index).toBe(0);
+    expect(history.location.pathname).toBe('/');
   });
 
   test('Should go to signUp page', async () => {
