@@ -1,35 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Login } from '@/presentation/pages';
-import { ValidationStub } from '@/presentation/test/mock-validation';
-import { Authentication, AuthenticationParams } from '@/domain/useCases';
-import { mockAccountModel } from '@/domain/test';
-import { AccountModel } from '@/domain/models';
 
-class AuthenticationSpy implements Authentication {
-  account = mockAccountModel();
-  params: AuthenticationParams;
+type Props = {
+  MakeLogin: React.FC;
+};
 
-  async auth(params: AuthenticationParams): Promise<AccountModel> {
-    this.params = params;
-    return await Promise.resolve(this.account);
-  }
-}
-
-const Router: React.FC = () => {
-  const validationStub = new ValidationStub();
-  const authentication = new AuthenticationSpy();
+const Router: React.FC<Props> = ({ MakeLogin }: Props) => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/login"
-          element={
-            <Login
-              validation={validationStub}
-              authentication={authentication}
-            />
-          }
-        />
+        <Route path="/login" element={<MakeLogin />} />
       </Routes>
     </BrowserRouter>
   );
