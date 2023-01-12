@@ -1,5 +1,5 @@
 interface AccountModel {
-  accessToken: string;
+  token: string;
 }
 
 export { AccountModel };

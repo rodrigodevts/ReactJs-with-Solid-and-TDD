@@ -65,7 +65,8 @@ function Login({ validation, authentication }: LoginProps) {
         email: state.email,
         password: state.password,
       });
-      localStorage.setItem('react-solid@accessToken', account.accessToken);
+
+      localStorage.setItem('react-solid@accessToken', account.token);
       navigate('/', { replace: true });
     } catch (error) {
       setState({ ...state, isLoading: false, mainError: error.message });

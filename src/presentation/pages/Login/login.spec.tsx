@@ -218,7 +218,7 @@ describe('Login component', () => {
     await simulateValidSubmit(sut);
     expect(localStorage.setItem).toHaveBeenCalledWith(
       'react-solid@accessToken',
-      authenticationSpy.account.accessToken
+      authenticationSpy.account.token
     );
     expect(history.index).toBe(0);
     expect(history.location.pathname).toBe('/');
