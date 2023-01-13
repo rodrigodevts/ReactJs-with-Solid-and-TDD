@@ -1,5 +1,5 @@
-const makeApiUrl = (): string => {
-  return 'http://localhost:3333/sessions';
+const makeApiUrl = (path: string): string => {
+  return `http://localhost:3333${path}`;
 };
 
 export { makeApiUrl };
