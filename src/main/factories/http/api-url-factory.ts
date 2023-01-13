@@ -1,5 +1,5 @@
 const makeApiUrl = (path: string): string => {
-  return `http://localhost:3333${path}`;
+  return `${String(import.meta.env.VITE_TEST_API_URL)}${path}`;
 };
 
 export { makeApiUrl };
