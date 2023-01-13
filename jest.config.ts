@@ -1,7 +1,14 @@
 export default {
   clearMocks: true,
-  collectCoverage: true,
-  collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}', '!**/*.d.ts'],
+  collectCoverage: false,
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*.{ts,tsx}',
+    '!<rootDir>/src/**/protocols/**/*',
+    '!<rootDir>/src/domain/models/**/*',
+    '!<rootDir>/src/main/**/*',
+    '!<rootDir>/src/presentation/router/**/*',
+    '!**/*.d.ts',
+  ],
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   roots: ['<rootDir>/src'],

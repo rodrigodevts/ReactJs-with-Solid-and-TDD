@@ -10,7 +10,7 @@ import 'jest-localstorage-mock';
 
 import { ValidationStub } from '@/presentation/test/mock-validation';
 import { AuthenticationSpy } from '@/presentation/test/mock-authentication';
-import { InvalidCredentialsError } from '@/domain/errors';
+import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error';
 import Login from '.';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';

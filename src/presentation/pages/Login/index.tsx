@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Footer,
-  FormStatus,
-  Input,
-  LoginHeader,
-  Spinner,
-} from '@/presentation/components';
+import { Link, useNavigate } from 'react-router-dom';
+
+import LoginHeader from '@/presentation/components/login-header';
+import Input from '@/presentation/components/input';
+import Spinner from '@/presentation/components/spinner';
+import FormStatus from '@/presentation/components/form-status';
+import Footer from '@/presentation/components/footer';
 
 import { FormContext } from '@/presentation/contexts/formContext';
 
 import { Validation } from '@/presentation/protocols/validation';
-import { Authentication } from '@/domain/useCases';
+import { Authentication } from '@/domain/useCases/Authentication';
 
 import './login-styles.scss';
-import { Link, useNavigate } from 'react-router-dom';
 
 type LoginProps = {
   validation: Validation;
