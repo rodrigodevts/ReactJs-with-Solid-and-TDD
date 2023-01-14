@@ -1,0 +1,1 @@
+[![Build Status](https://app.travis-ci.com/rodrigodevts/ReactJs-with-Solid-and-TDD.svg?branch=main)](https://app.travis-ci.com/rodrigodevts/ReactJs-with-Solid-and-TDD)
