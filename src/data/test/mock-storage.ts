@@ -1,6 +1,6 @@
 import { SetStorage } from '@/data/protocols/cache/set-storage';
 
-class SetStorageSpy implements SetStorage {
+class SetStorageMock implements SetStorage {
   key: string;
   value: any;
 
@@ -10,4 +10,4 @@ class SetStorageSpy implements SetStorage {
   }
 }
 
-export { SetStorageSpy };
+export { SetStorageMock };
