@@ -4,7 +4,7 @@ export default {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.{ts,tsx}',
     '!<rootDir>/src/**/protocols/**/*',
-    '!<rootDir>/src/domain/models/**/*',
+    '!<rootDir>/src/domain/**/*',
     '!<rootDir>/src/main/**/*',
     '!<rootDir>/src/presentation/router/**/*',
     '!**/*.d.ts',
