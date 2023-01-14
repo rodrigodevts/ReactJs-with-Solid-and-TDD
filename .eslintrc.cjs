@@ -36,6 +36,7 @@ module.exports = {
     'react/jsx-uses-react': 'error',
     'react/jsx-uses-vars': 'error',
     '@typescript-eslint/no-misused-promises': 'off',
+    '@typescript-eslint/comma-spacing': 'off',
   },
   settings: {
     "react": {
