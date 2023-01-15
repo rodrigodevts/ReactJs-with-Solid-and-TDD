@@ -3,6 +3,7 @@ import { HttpStatusCode } from '@/data/protocols/http/http-response';
 import { HttpPostClientSpy } from '@/data/test/mock-http';
 import { AccountModel } from '@/domain/models/AccountModel';
 import { AddAccount, AddAccountParams } from '@/domain/useCases/add-account';
+import { UnexpectedError } from '@/domain/errors/unexpected-error';
 
 class RemoteAddAccount implements AddAccount {
   constructor(
@@ -20,10 +21,12 @@ class RemoteAddAccount implements AddAccount {
     });
 
     switch (httpResponse.statusCode) {
+      case HttpStatusCode.ok:
+        return httpResponse.body;
       case HttpStatusCode.forbidden:
         throw new EmailInUseError();
       default:
-        return null;
+        throw new UnexpectedError();
     }
   }
 }
