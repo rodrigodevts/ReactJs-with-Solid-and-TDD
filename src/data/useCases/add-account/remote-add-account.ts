@@ -1,3 +1,5 @@
+import { EmailInUseError } from '@/domain/errors/email-in-use-error';
+import { HttpStatusCode } from '@/data/protocols/http/http-response';
 import { HttpPostClientSpy } from '@/data/test/mock-http';
 import { AccountModel } from '@/domain/models/AccountModel';
 import { AddAccount, AddAccountParams } from '@/domain/useCases/add-account';
@@ -12,12 +14,17 @@ class RemoteAddAccount implements AddAccount {
   ) {}
 
   async add(params: AddAccountParams): Promise<AccountModel> {
-    await this.httpPostClient.post({
+    const httpResponse = await this.httpPostClient.post({
       url: this.url,
       body: params,
     });
 
-    return null;
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.forbidden:
+        throw new EmailInUseError();
+      default:
+        return null;
+    }
   }
 }
 
