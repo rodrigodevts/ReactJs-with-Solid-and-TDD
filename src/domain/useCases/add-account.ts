@@ -11,4 +11,4 @@ interface AddAccount {
   add: (params: AddAccountParams) => Promise<AccountModel>;
 }
 
-export { AddAccount };
+export { AddAccount, AddAccountParams };
