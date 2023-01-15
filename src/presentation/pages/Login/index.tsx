@@ -11,12 +11,14 @@ import { FormContext } from '@/presentation/contexts/formContext';
 
 import { Validation } from '@/presentation/protocols/validation';
 import { Authentication } from '@/domain/useCases/Authentication';
+import { SaveAccessToken } from '@/domain/useCases/save-access-token';
 
 import './login-styles.scss';
 
 type LoginProps = {
   validation: Validation;
   authentication: Authentication;
+  saveAccessToken: SaveAccessToken;
 };
 
 export type LoginStateProps = {
@@ -28,7 +30,7 @@ export type LoginStateProps = {
   mainError: string;
 };
 
-function Login({ validation, authentication }: LoginProps) {
+function Login({ validation, authentication, saveAccessToken }: LoginProps) {
   const [state, setState] = useState<LoginStateProps>({
     isLoading: false,
     email: '',
@@ -65,7 +67,7 @@ function Login({ validation, authentication }: LoginProps) {
         password: state.password,
       });
 
-      localStorage.setItem('react-solid@accessToken', account.token);
+      await saveAccessToken.save(account.token);
       navigate('/', { replace: true });
     } catch (error) {
       setState({ ...state, isLoading: false, mainError: error.message });
