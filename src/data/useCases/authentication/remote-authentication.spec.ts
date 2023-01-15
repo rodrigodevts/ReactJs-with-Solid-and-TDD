@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { HttpStatusCode } from '@/data/protocols/http/http-response';
-import { HttpPostClientSpy } from '@/data/test/mock-http-client';
+import { HttpPostClientSpy } from '@/data/test/mock-http';
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error';
 import { UnexpectedError } from '@/domain/errors/unexpected-error';
 import { AccountModel } from '@/domain/models/AccountModel';
@@ -8,7 +8,7 @@ import {
   mockAccountModel,
   mockAuthentication,
 } from '@/domain/test/mock-account';
-import { AuthenticationParams } from '@/domain/useCases/Authentication';
+import { AuthenticationParams } from '@/domain/useCases/authentication';
 import { RemoteAuthentication } from './remote-authentication';
 
 type SutTypes = {

@@ -10,7 +10,7 @@ import Footer from '@/presentation/components/footer';
 import { FormContext } from '@/presentation/contexts/formContext';
 
 import { Validation } from '@/presentation/protocols/validation';
-import { Authentication } from '@/domain/useCases/Authentication';
+import { Authentication } from '@/domain/useCases/authentication';
 import { SaveAccessToken } from '@/domain/useCases/save-access-token';
 
 import './login-styles.scss';

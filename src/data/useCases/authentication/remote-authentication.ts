@@ -6,7 +6,7 @@ import { AccountModel } from '@/domain/models/AccountModel';
 import {
   Authentication,
   AuthenticationParams,
-} from '@/domain/useCases/Authentication';
+} from '@/domain/useCases/authentication';
 
 class RemoteAuthentication implements Authentication {
   constructor(
