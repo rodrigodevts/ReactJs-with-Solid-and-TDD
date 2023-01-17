@@ -1,21 +1,21 @@
-import { Link } from 'react-router-dom';
-
 import LoginHeader from '@/presentation/components/login-header';
 import Input from '@/presentation/components/input';
 import FormStatus from '@/presentation/components/form-status';
 import Footer from '@/presentation/components/footer';
+import { FormContext } from '@/presentation/contexts/formContext';
 
 import './signup-styles.scss';
-import { FormContext } from '@/presentation/contexts/formContext';
+
 import { useState } from 'react';
+import Spinner from '@/presentation/components/spinner';
 
 function Signup() {
   const [state, setState] = useState({
     isLoading: false,
-    email: '',
-    password: '',
-    emailError: '',
-    passwordError: '',
+    nameError: 'Campo obrigatório',
+    emailError: 'Campo obrigatório',
+    passwordError: 'Campo obrigatório',
+    passwordConfirmationError: 'Campo obrigatório',
     mainError: '',
   });
 
@@ -37,13 +37,16 @@ function Signup() {
             name="passwordConfirmation"
             placeholder="Repita sua senha"
           />
-          <button className="buttonSubmit" type="submit">
-            Cadastrar
+          <button
+            data-testid="submit"
+            disabled
+            className="buttonSubmit"
+            type="submit"
+          >
+            {state.isLoading ? <Spinner /> : 'Cadastrar'}
           </button>
           <FormStatus />
-          <Link to="/login" className="createCountLink">
-            Voltar para o Login
-          </Link>
+          <span className="createCountLink">Voltar para o Login</span>
         </form>
       </FormContext.Provider>
       <Footer />

@@ -21,17 +21,8 @@ type LoginProps = {
   saveAccessToken: SaveAccessToken;
 };
 
-export type LoginStateProps = {
-  isLoading: boolean;
-  email: string;
-  password: string;
-  emailError: string;
-  passwordError: string;
-  mainError: string;
-};
-
 function Login({ validation, authentication, saveAccessToken }: LoginProps) {
-  const [state, setState] = useState<LoginStateProps>({
+  const [state, setState] = useState({
     isLoading: false,
     email: '',
     password: '',
