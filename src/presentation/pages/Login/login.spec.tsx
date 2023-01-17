@@ -7,6 +7,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 
+import * as Helper from '@/presentation/test/form-helper';
 import { ValidationStub } from '@/presentation/test/mock-validation';
 import { AuthenticationSpy } from '@/presentation/test/mock-authentication';
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error';
@@ -80,21 +81,6 @@ const populatePasswordField = (
   fireEvent.input(passwordInput, { target: { value: password } });
 };
 
-const testStatusForField = (
-  sut: RenderResult,
-  fieldName: string,
-  validationError?: string
-): void => {
-  const emailStatus = sut.getByTestId(`${fieldName}-status`);
-  expect(emailStatus.title).toBe(validationError || 'Tudo certo!');
-  expect(emailStatus.textContent).toBe(validationError ? '🛑' : '✅');
-};
-
-const testErrorWrapChildCount = (sut: RenderResult, count: number): void => {
-  const errorWrap = sut.getByTestId('error-wrap');
-  expect(errorWrap.childElementCount).toBe(count);
-};
-
 const testElementExists = (sut: RenderResult, fieldName: string): void => {
   const element = sut.getByTestId(fieldName);
   expect(element).toBeTruthy();
@@ -109,15 +95,6 @@ const testElementText = (
   expect(element.textContent).toBe(text);
 };
 
-const testButtonIsDisabled = (
-  sut: RenderResult,
-  fieldName: string,
-  isDisabled: boolean
-): void => {
-  const element = sut.getByTestId(fieldName) as HTMLButtonElement;
-  expect(element.disabled).toBe(isDisabled);
-};
-
 describe('Login component', () => {
   afterEach(cleanup);
 
@@ -126,10 +103,10 @@ describe('Login component', () => {
     const { sut } = makeSut({ validationError });
 
     const buttonSubmit = sut.getByTestId('button-submit') as HTMLButtonElement;
-    testErrorWrapChildCount(sut, 0);
-    testButtonIsDisabled(sut, 'button-submit', true);
-    testStatusForField(sut, 'email', validationError);
-    testStatusForField(sut, 'password', validationError);
+    Helper.testChildCount(sut, 'error-wrap', 0);
+    Helper.testButtonIsDisabled(sut, 'button-submit', true);
+    Helper.testStatusForField(sut, 'email', validationError);
+    Helper.testStatusForField(sut, 'password', validationError);
     expect(buttonSubmit.childElementCount).toBe(0);
   });
 
@@ -138,7 +115,7 @@ describe('Login component', () => {
     const { sut } = makeSut({ validationError });
 
     populateEmailField(sut);
-    testStatusForField(sut, 'email', validationError);
+    Helper.testStatusForField(sut, 'email', validationError);
   });
 
   test('Should show password error if Validation fails', () => {
@@ -146,21 +123,21 @@ describe('Login component', () => {
     const { sut } = makeSut({ validationError });
 
     populatePasswordField(sut);
-    testStatusForField(sut, 'password', validationError);
+    Helper.testStatusForField(sut, 'password', validationError);
   });
 
   test('Should show valid email state if Validation succeeds', () => {
     const { sut } = makeSut();
 
     populateEmailField(sut);
-    testStatusForField(sut, 'email');
+    Helper.testStatusForField(sut, 'email');
   });
 
   test('Should show valid password state if Validation succeeds', () => {
     const { sut } = makeSut();
 
     populatePasswordField(sut);
-    testStatusForField(sut, 'email');
+    Helper.testStatusForField(sut, 'email');
   });
 
   test('Should enable submit button if form is valid', () => {
@@ -168,7 +145,7 @@ describe('Login component', () => {
 
     populateEmailField(sut);
     populatePasswordField(sut);
-    testButtonIsDisabled(sut, 'button-submit', false);
+    Helper.testButtonIsDisabled(sut, 'button-submit', false);
   });
 
   test('Should show spinner on submit', async () => {
@@ -214,7 +191,7 @@ describe('Login component', () => {
     await waitFor(() => {
       testElementText(sut, 'main-error', error.message);
     });
-    testErrorWrapChildCount(sut, 1);
+    Helper.testChildCount(sut, 'error-wrap', 1);
     testElementText(sut, 'button-submit', 'Entrar');
   });
 
@@ -237,7 +214,7 @@ describe('Login component', () => {
       await waitFor(() => {
         testElementText(sut, 'main-error', error.message);
       });
-      testErrorWrapChildCount(sut, 1);
+      Helper.testChildCount(sut, 'error-wrap', 1);
       testElementText(sut, 'button-submit', 'Entrar');
     });
   });
