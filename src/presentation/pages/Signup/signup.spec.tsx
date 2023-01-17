@@ -1,12 +1,7 @@
 import * as Helper from '@/presentation/test/form-helper';
 import { ValidationStub } from '@/presentation/test/mock-validation';
 import { faker } from '@faker-js/faker';
-import {
-  cleanup,
-  fireEvent,
-  render,
-  RenderResult,
-} from '@testing-library/react';
+import { cleanup, render, RenderResult } from '@testing-library/react';
 import Signup from '.';
 
 type SutTypes = {
@@ -28,15 +23,6 @@ const makeSut = (params?: SutParams): SutTypes => {
   };
 };
 
-const populateInputField = (
-  sut: RenderResult,
-  fieldName: string,
-  value = faker.random.words()
-) => {
-  const element = sut.getByTestId(fieldName);
-  fireEvent.input(element, { target: { value } });
-};
-
 describe('SignUp Component', () => {
   afterEach(cleanup);
 
@@ -54,7 +40,7 @@ describe('SignUp Component', () => {
   test('Should show name error if Validation fails', () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
-    populateInputField(sut, 'name');
+    Helper.populateInputField(sut, 'name');
     Helper.testStatusForField(sut, 'name', validationError);
   });
 });
