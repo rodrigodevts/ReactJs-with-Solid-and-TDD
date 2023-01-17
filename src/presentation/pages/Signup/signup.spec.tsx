@@ -1,28 +1,60 @@
 import * as Helper from '@/presentation/test/form-helper';
-import { render, RenderResult } from '@testing-library/react';
+import { ValidationStub } from '@/presentation/test/mock-validation';
+import { faker } from '@faker-js/faker';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  RenderResult,
+} from '@testing-library/react';
 import Signup from '.';
 
 type SutTypes = {
   sut: RenderResult;
 };
 
-const makeSut = (): SutTypes => {
-  const sut = render(<Signup />);
+type SutParams = {
+  validationError: string;
+};
+
+const makeSut = (params?: SutParams): SutTypes => {
+  const validationSub = new ValidationStub();
+  validationSub.errorMessage = params?.validationError;
+
+  const sut = render(<Signup validation={validationSub} />);
 
   return {
     sut,
   };
 };
 
+const populateInputField = (
+  sut: RenderResult,
+  fieldName: string,
+  value = faker.random.words()
+) => {
+  const element = sut.getByTestId(fieldName);
+  fireEvent.input(element, { target: { value } });
+};
+
 describe('SignUp Component', () => {
+  afterEach(cleanup);
+
   test('Should start with initial state', () => {
-    const validationError = 'Campo obrigatório';
-    const { sut } = makeSut();
+    const validationError = faker.random.words();
+    const { sut } = makeSut({ validationError });
     Helper.testChildCount(sut, 'error-wrap', 0);
     Helper.testButtonIsDisabled(sut, 'submit', true);
     Helper.testStatusForField(sut, 'name', validationError);
-    Helper.testStatusForField(sut, 'email', validationError);
-    Helper.testStatusForField(sut, 'password', validationError);
-    Helper.testStatusForField(sut, 'passwordConfirmation', validationError);
+    Helper.testStatusForField(sut, 'email', 'Campo obrigatório');
+    Helper.testStatusForField(sut, 'password', 'Campo obrigatório');
+    Helper.testStatusForField(sut, 'passwordConfirmation', 'Campo obrigatório');
+  });
+
+  test('Should show name error if Validation fails', () => {
+    const validationError = faker.random.words();
+    const { sut } = makeSut({ validationError });
+    populateInputField(sut, 'name');
+    Helper.testStatusForField(sut, 'name', validationError);
   });
 });
