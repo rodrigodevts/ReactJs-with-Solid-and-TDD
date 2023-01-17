@@ -19,6 +19,7 @@ function Signup({ validation }: SignUpProps) {
     isLoading: false,
     name: '',
     nameError: '',
+    email: '',
     emailError: 'Campo obrigatório',
     passwordError: 'Campo obrigatório',
     passwordConfirmationError: 'Campo obrigatório',
@@ -29,8 +30,9 @@ function Signup({ validation }: SignUpProps) {
     setState({
       ...state,
       nameError: validation.validate('name', state.name),
+      emailError: validation.validate('email', state.email),
     });
-  }, [state.name]);
+  }, [state.name, state.email]);
 
   return (
     <div className="signup">
