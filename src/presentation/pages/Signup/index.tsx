@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import LoginHeader from '@/presentation/components/login-header';
 import Input from '@/presentation/components/input';
 import FormStatus from '@/presentation/components/form-status';
@@ -6,18 +7,30 @@ import { FormContext } from '@/presentation/contexts/formContext';
 
 import './signup-styles.scss';
 
-import { useState } from 'react';
 import Spinner from '@/presentation/components/spinner';
+import { Validation } from '@/presentation/protocols/validation';
 
-function Signup() {
+type SignUpProps = {
+  validation: Validation;
+};
+
+function Signup({ validation }: SignUpProps) {
   const [state, setState] = useState({
     isLoading: false,
-    nameError: 'Campo obrigatório',
+    name: '',
+    nameError: '',
     emailError: 'Campo obrigatório',
     passwordError: 'Campo obrigatório',
     passwordConfirmationError: 'Campo obrigatório',
     mainError: '',
   });
+
+  useEffect(() => {
+    setState({
+      ...state,
+      nameError: validation.validate('name', state.name),
+    });
+  }, [state.name]);
 
   return (
     <div className="signup">
