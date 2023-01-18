@@ -1,4 +1,5 @@
 import * as Helper from '@/presentation/test/form-helper';
+import { AddAccountSpy } from '@/presentation/test/mock-add-account';
 import { ValidationStub } from '@/presentation/test/mock-validation';
 import { faker } from '@faker-js/faker';
 import { cleanup, render, RenderResult } from '@testing-library/react';
@@ -6,6 +7,7 @@ import Signup from '.';
 
 type SutTypes = {
   sut: RenderResult;
+  addAccountSpy: AddAccountSpy;
 };
 
 type SutParams = {
@@ -15,11 +17,15 @@ type SutParams = {
 const makeSut = (params?: SutParams): SutTypes => {
   const validationSub = new ValidationStub();
   validationSub.errorMessage = params?.validationError;
+  const addAccountSpy = new AddAccountSpy();
 
-  const sut = render(<Signup validation={validationSub} />);
+  const sut = render(
+    <Signup validation={validationSub} addAccount={addAccountSpy} />
+  );
 
   return {
     sut,
+    addAccountSpy,
   };
 };
 
@@ -124,5 +130,40 @@ describe('SignUp Component', () => {
       ],
     });
     Helper.testElementExists(sut, 'spinner');
+  });
+
+  test('Should call AddAccount with correct values', async () => {
+    const { sut, addAccountSpy } = makeSut();
+    const name = faker.internet.userName();
+    const email = faker.internet.email();
+    const password = faker.internet.password();
+
+    await Helper.simulateValidSubmit({
+      sut,
+      fieldsSubmit: [
+        {
+          name: 'name',
+          value: name,
+        },
+        {
+          name: 'email',
+          value: email,
+        },
+        {
+          name: 'password',
+          value: password,
+        },
+        {
+          name: 'passwordConfirmation',
+          value: password,
+        },
+      ],
+    });
+    expect(addAccountSpy.params).toEqual({
+      name,
+      email,
+      password,
+      passwordConfirmation: password,
+    });
   });
 });
