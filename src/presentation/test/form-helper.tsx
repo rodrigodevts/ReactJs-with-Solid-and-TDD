@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { fireEvent, RenderResult } from '@testing-library/react';
+import { fireEvent, RenderResult, waitFor } from '@testing-library/react';
 
 const testChildCount = (
   sut: RenderResult,
@@ -38,9 +38,36 @@ const populateInputField = (
   fireEvent.input(element, { target: { value } });
 };
 
+type SimulateValidSubmitProps = {
+  sut: RenderResult;
+  fieldsSubmit: Array<{
+    name: string;
+    value: string;
+  }>;
+};
+
+const simulateValidSubmit = async ({
+  sut,
+  fieldsSubmit,
+}: SimulateValidSubmitProps): Promise<void> => {
+  fieldsSubmit.forEach((field) => {
+    populateInputField(sut, field.name, field.value);
+  });
+  const loginForm = sut.getByTestId('login-form');
+  fireEvent.submit(loginForm);
+  await waitFor(() => loginForm);
+};
+
+const testElementExists = (sut: RenderResult, fieldName: string): void => {
+  const element = sut.getByTestId(fieldName);
+  expect(element).toBeTruthy();
+};
+
 export {
   testChildCount,
   testButtonIsDisabled,
   testStatusForField,
   populateInputField,
+  simulateValidSubmit,
+  testElementExists,
 };

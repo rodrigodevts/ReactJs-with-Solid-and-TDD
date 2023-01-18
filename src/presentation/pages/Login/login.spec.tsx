@@ -52,24 +52,6 @@ const makeSut = (params?: SutParams): SutTypes => {
   };
 };
 
-const simulateValidSubmit = async (
-  sut: RenderResult,
-  email = faker.internet.email(),
-  password = faker.internet.password()
-): Promise<void> => {
-  Helper.populateInputField(sut, 'email', email);
-  Helper.populateInputField(sut, 'password', password);
-
-  const loginForm = sut.getByTestId('login-form');
-  fireEvent.submit(loginForm);
-  await waitFor(() => loginForm);
-};
-
-const testElementExists = (sut: RenderResult, fieldName: string): void => {
-  const element = sut.getByTestId(fieldName);
-  expect(element).toBeTruthy();
-};
-
 const testElementText = (
   sut: RenderResult,
   fieldName: string,
@@ -134,8 +116,20 @@ describe('Login component', () => {
 
   test('Should show spinner on submit', async () => {
     const { sut } = makeSut();
-    await simulateValidSubmit(sut);
-    testElementExists(sut, 'spinner');
+    await Helper.simulateValidSubmit({
+      sut,
+      fieldsSubmit: [
+        {
+          name: 'email',
+          value: faker.internet.email(),
+        },
+        {
+          name: 'password',
+          value: faker.internet.password(),
+        },
+      ],
+    });
+    Helper.testElementExists(sut, 'spinner');
   });
 
   test('Should call Authentication with correct values', async () => {
@@ -143,7 +137,19 @@ describe('Login component', () => {
     const email = faker.internet.email();
     const password = faker.internet.password();
 
-    await simulateValidSubmit(sut, email, password);
+    await Helper.simulateValidSubmit({
+      sut,
+      fieldsSubmit: [
+        {
+          name: 'email',
+          value: email,
+        },
+        {
+          name: 'password',
+          value: password,
+        },
+      ],
+    });
     expect(authenticationSpy.params).toEqual({
       email,
       password,
@@ -152,8 +158,24 @@ describe('Login component', () => {
 
   test('Should call Authentication only once', async () => {
     const { sut, authenticationSpy } = makeSut();
-    await simulateValidSubmit(sut);
-    await simulateValidSubmit(sut);
+    const fields = [
+      {
+        name: 'email',
+        value: faker.internet.email(),
+      },
+      {
+        name: 'password',
+        value: faker.internet.password(),
+      },
+    ];
+    await Helper.simulateValidSubmit({
+      sut,
+      fieldsSubmit: fields,
+    });
+    await Helper.simulateValidSubmit({
+      sut,
+      fieldsSubmit: fields,
+    });
     expect(authenticationSpy.callsCount).toBe(1);
   });
 
@@ -171,7 +193,19 @@ describe('Login component', () => {
     jest
       .spyOn(authenticationSpy, 'auth')
       .mockReturnValueOnce(Promise.reject(error));
-    await simulateValidSubmit(sut);
+    await Helper.simulateValidSubmit({
+      sut,
+      fieldsSubmit: [
+        {
+          name: 'email',
+          value: faker.internet.email(),
+        },
+        {
+          name: 'password',
+          value: faker.internet.password(),
+        },
+      ],
+    });
     await waitFor(() => {
       testElementText(sut, 'main-error', error.message);
     });
@@ -181,7 +215,19 @@ describe('Login component', () => {
 
   test('Should call SaveAccessToken on success', async () => {
     const { sut, authenticationSpy, saveAccessTokenMock } = makeSut();
-    await simulateValidSubmit(sut);
+    await Helper.simulateValidSubmit({
+      sut,
+      fieldsSubmit: [
+        {
+          name: 'email',
+          value: faker.internet.email(),
+        },
+        {
+          name: 'password',
+          value: faker.internet.password(),
+        },
+      ],
+    });
     expect(saveAccessTokenMock.accessToken).toBe(
       authenticationSpy.account.token
     );
@@ -194,7 +240,19 @@ describe('Login component', () => {
     const error = new InvalidCredentialsError();
     await waitFor(async () => {
       jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error);
-      await simulateValidSubmit(sut);
+      await Helper.simulateValidSubmit({
+        sut,
+        fieldsSubmit: [
+          {
+            name: 'email',
+            value: faker.internet.email(),
+          },
+          {
+            name: 'password',
+            value: faker.internet.password(),
+          },
+        ],
+      });
       await waitFor(() => {
         testElementText(sut, 'main-error', error.message);
       });

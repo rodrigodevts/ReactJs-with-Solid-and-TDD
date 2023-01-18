@@ -1,13 +1,7 @@
 import * as Helper from '@/presentation/test/form-helper';
 import { ValidationStub } from '@/presentation/test/mock-validation';
 import { faker } from '@faker-js/faker';
-import {
-  cleanup,
-  fireEvent,
-  render,
-  RenderResult,
-  waitFor,
-} from '@testing-library/react';
+import { cleanup, render, RenderResult } from '@testing-library/react';
 import Signup from '.';
 
 type SutTypes = {
@@ -27,31 +21,6 @@ const makeSut = (params?: SutParams): SutTypes => {
   return {
     sut,
   };
-};
-
-type SimulateValidSubmitProps = {
-  sut: RenderResult;
-  fieldsSubmit: Array<{
-    name: string;
-    value: string;
-  }>;
-};
-
-const simulateValidSubmit = async ({
-  sut,
-  fieldsSubmit,
-}: SimulateValidSubmitProps): Promise<void> => {
-  fieldsSubmit.forEach((field) => {
-    Helper.populateInputField(sut, field.name, field.value);
-  });
-  const loginForm = sut.getByTestId('login-form');
-  fireEvent.submit(loginForm);
-  await waitFor(() => loginForm);
-};
-
-const testElementExists = (sut: RenderResult, fieldName: string): void => {
-  const element = sut.getByTestId(fieldName);
-  expect(element).toBeTruthy();
 };
 
 describe('SignUp Component', () => {
@@ -133,7 +102,7 @@ describe('SignUp Component', () => {
     const { sut } = makeSut();
     const password = faker.internet.password();
 
-    await simulateValidSubmit({
+    await Helper.simulateValidSubmit({
       sut,
       fieldsSubmit: [
         {
@@ -154,6 +123,6 @@ describe('SignUp Component', () => {
         },
       ],
     });
-    testElementExists(sut, 'spinner');
+    Helper.testElementExists(sut, 'spinner');
   });
 });
