@@ -61,7 +61,12 @@ function Signup({ validation }: SignUpProps) {
           />
           <button
             data-testid="submit"
-            disabled
+            disabled={
+              !!state.nameError ||
+              !!state.emailError ||
+              !!state.passwordError ||
+              !!state.passwordConfirmationError
+            }
             className="buttonSubmit"
             type="submit"
           >
