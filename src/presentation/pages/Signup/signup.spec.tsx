@@ -65,27 +65,36 @@ describe('SignUp Component', () => {
     Helper.testStatusForField(sut, 'passwordConfirmation', validationError);
   });
 
-  test('should show valid name state if Validation succeeds', () => {
+  test('Should show valid name state if Validation succeeds', () => {
     const { sut } = makeSut();
     Helper.populateInputField(sut, 'name');
     Helper.testStatusForField(sut, 'name');
   });
 
-  test('should show valid email state if Validation succeeds', () => {
+  test('Should show valid email state if Validation succeeds', () => {
     const { sut } = makeSut();
     Helper.populateInputField(sut, 'email');
     Helper.testStatusForField(sut, 'email');
   });
 
-  test('should show valid password state if Validation succeeds', () => {
+  test('Should show valid password state if Validation succeeds', () => {
     const { sut } = makeSut();
     Helper.populateInputField(sut, 'password');
     Helper.testStatusForField(sut, 'password');
   });
 
-  test('should show valid passwordConfirmation state if Validation succeeds', () => {
+  test('Should show valid passwordConfirmation state if Validation succeeds', () => {
     const { sut } = makeSut();
     Helper.populateInputField(sut, 'passwordConfirmation');
     Helper.testStatusForField(sut, 'passwordConfirmation');
+  });
+
+  test('Should enable submit button if form is valid', () => {
+    const { sut } = makeSut();
+    Helper.populateInputField(sut, 'name');
+    Helper.populateInputField(sut, 'email');
+    Helper.populateInputField(sut, 'password');
+    Helper.populateInputField(sut, 'passwordConfirmation');
+    Helper.testButtonIsDisabled(sut, 'submit', false);
   });
 });
