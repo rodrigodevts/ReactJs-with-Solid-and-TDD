@@ -41,11 +41,34 @@ function Signup({ validation }: SignUpProps) {
     });
   }, [state.name, state.email, state.password, state.passwordConfirmation]);
 
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    event.preventDefault();
+    setState({ ...state, isLoading: true });
+  };
+
+  // try {
+  //   if (state.isLoading || state.nameError || state.emailError || state.password || state.passwordConfirmation) {
+  //     return;
+  //   }
+
+  //   setState({ ...state, isLoading: true });
+
+  // } catch (error) {
+  //   setState({
+  //     ...state,
+  //     isLoading: false,
+  //     mainError: error.message,
+  //   });
+  //   }
+  // };
+
   return (
     <div className="signup">
       <LoginHeader />
       <FormContext.Provider value={{ state, setState }}>
-        <form className="form">
+        <form data-testid="login-form" className="form" onSubmit={handleSubmit}>
           <h2>SignUp</h2>
           <Input type="text" name="name" placeholder="Digite seu nome" />
           <Input type="email" name="email" placeholder="Digite seu e-mail" />
