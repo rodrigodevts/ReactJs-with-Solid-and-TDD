@@ -1,7 +1,13 @@
 import * as Helper from '@/presentation/test/form-helper';
 import { ValidationStub } from '@/presentation/test/mock-validation';
 import { faker } from '@faker-js/faker';
-import { cleanup, render, RenderResult } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  RenderResult,
+  waitFor,
+} from '@testing-library/react';
 import Signup from '.';
 
 type SutTypes = {
@@ -21,6 +27,31 @@ const makeSut = (params?: SutParams): SutTypes => {
   return {
     sut,
   };
+};
+
+type SimulateValidSubmitProps = {
+  sut: RenderResult;
+  fieldsSubmit: Array<{
+    name: string;
+    value: string;
+  }>;
+};
+
+const simulateValidSubmit = async ({
+  sut,
+  fieldsSubmit,
+}: SimulateValidSubmitProps): Promise<void> => {
+  fieldsSubmit.forEach((field) => {
+    Helper.populateInputField(sut, field.name, field.value);
+  });
+  const loginForm = sut.getByTestId('login-form');
+  fireEvent.submit(loginForm);
+  await waitFor(() => loginForm);
+};
+
+const testElementExists = (sut: RenderResult, fieldName: string): void => {
+  const element = sut.getByTestId(fieldName);
+  expect(element).toBeTruthy();
 };
 
 describe('SignUp Component', () => {
@@ -96,5 +127,33 @@ describe('SignUp Component', () => {
     Helper.populateInputField(sut, 'password');
     Helper.populateInputField(sut, 'passwordConfirmation');
     Helper.testButtonIsDisabled(sut, 'submit', false);
+  });
+
+  test('Should show spinner on submit', async () => {
+    const { sut } = makeSut();
+    const password = faker.internet.password();
+
+    await simulateValidSubmit({
+      sut,
+      fieldsSubmit: [
+        {
+          name: 'name',
+          value: faker.internet.userName(),
+        },
+        {
+          name: 'email',
+          value: faker.internet.email(),
+        },
+        {
+          name: 'password',
+          value: password,
+        },
+        {
+          name: 'passwordConfirmation',
+          value: password,
+        },
+      ],
+    });
+    testElementExists(sut, 'spinner');
   });
 });
