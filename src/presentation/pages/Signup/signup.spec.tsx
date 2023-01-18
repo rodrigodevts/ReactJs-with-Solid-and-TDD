@@ -70,4 +70,10 @@ describe('SignUp Component', () => {
     Helper.populateInputField(sut, 'name');
     Helper.testStatusForField(sut, 'name');
   });
+
+  test('should show valid email state if Validation succeeds', () => {
+    const { sut } = makeSut();
+    Helper.populateInputField(sut, 'email');
+    Helper.testStatusForField(sut, 'email');
+  });
 });
