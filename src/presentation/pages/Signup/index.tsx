@@ -9,12 +9,14 @@ import './signup-styles.scss';
 
 import Spinner from '@/presentation/components/spinner';
 import { Validation } from '@/presentation/protocols/validation';
+import { AddAccount } from '@/domain/useCases/add-account';
 
 type SignUpProps = {
   validation: Validation;
+  addAccount: AddAccount;
 };
 
-function Signup({ validation }: SignUpProps) {
+function Signup({ validation, addAccount }: SignUpProps) {
   const [state, setState] = useState({
     isLoading: false,
     name: '',
@@ -46,23 +48,13 @@ function Signup({ validation }: SignUpProps) {
   ): Promise<void> => {
     event.preventDefault();
     setState({ ...state, isLoading: true });
+    await addAccount.add({
+      name: state.name,
+      email: state.email,
+      password: state.password,
+      passwordConfirmation: state.passwordConfirmation,
+    });
   };
-
-  // try {
-  //   if (state.isLoading || state.nameError || state.emailError || state.password || state.passwordConfirmation) {
-  //     return;
-  //   }
-
-  //   setState({ ...state, isLoading: true });
-
-  // } catch (error) {
-  //   setState({
-  //     ...state,
-  //     isLoading: false,
-  //     mainError: error.message,
-  //   });
-  //   }
-  // };
 
   return (
     <div className="signup">
