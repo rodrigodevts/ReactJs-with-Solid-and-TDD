@@ -166,4 +166,37 @@ describe('SignUp Component', () => {
       passwordConfirmation: password,
     });
   });
+
+  test('Should addAccount only once', async () => {
+    const { sut, addAccountSpy } = makeSut();
+    const password = faker.internet.userName();
+    const fields = [
+      {
+        name: 'name',
+        value: faker.internet.userName(),
+      },
+      {
+        name: 'email',
+        value: faker.internet.email(),
+      },
+      {
+        name: 'password',
+        value: password,
+      },
+      {
+        name: 'passwordConfirmation',
+        value: password,
+      },
+    ];
+    await Helper.simulateValidSubmit({
+      sut,
+      fieldsSubmit: fields,
+    });
+    await Helper.simulateValidSubmit({
+      sut,
+      fieldsSubmit: fields,
+    });
+
+    expect(addAccountSpy.callsCount).toBe(1);
+  });
 });
