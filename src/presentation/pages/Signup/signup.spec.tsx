@@ -1,8 +1,9 @@
+import { EmailInUseError } from '@/domain/errors/email-in-use-error';
 import * as Helper from '@/presentation/test/form-helper';
 import { AddAccountSpy } from '@/presentation/test/mock-add-account';
 import { ValidationStub } from '@/presentation/test/mock-validation';
 import { faker } from '@faker-js/faker';
-import { cleanup, render, RenderResult } from '@testing-library/react';
+import { cleanup, render, RenderResult, waitFor } from '@testing-library/react';
 import Signup from '.';
 
 type SutTypes = {
@@ -27,6 +28,28 @@ const makeSut = (params?: SutParams): SutTypes => {
     sut,
     addAccountSpy,
   };
+};
+
+const inputsValues = () => {
+  const password = faker.internet.password();
+  return [
+    {
+      name: 'name',
+      value: faker.internet.userName(),
+    },
+    {
+      name: 'email',
+      value: faker.internet.email(),
+    },
+    {
+      name: 'password',
+      value: password,
+    },
+    {
+      name: 'passwordConfirmation',
+      value: password,
+    },
+  ];
 };
 
 describe('SignUp Component', () => {
@@ -106,28 +129,10 @@ describe('SignUp Component', () => {
 
   test('Should show spinner on submit', async () => {
     const { sut } = makeSut();
-    const password = faker.internet.password();
 
     await Helper.simulateValidSubmit({
       sut,
-      fieldsSubmit: [
-        {
-          name: 'name',
-          value: faker.internet.userName(),
-        },
-        {
-          name: 'email',
-          value: faker.internet.email(),
-        },
-        {
-          name: 'password',
-          value: password,
-        },
-        {
-          name: 'passwordConfirmation',
-          value: password,
-        },
-      ],
+      fieldsSubmit: inputsValues(),
     });
     Helper.testElementExists(sut, 'spinner');
   });
@@ -169,32 +174,13 @@ describe('SignUp Component', () => {
 
   test('Should addAccount only once', async () => {
     const { sut, addAccountSpy } = makeSut();
-    const password = faker.internet.userName();
-    const fields = [
-      {
-        name: 'name',
-        value: faker.internet.userName(),
-      },
-      {
-        name: 'email',
-        value: faker.internet.email(),
-      },
-      {
-        name: 'password',
-        value: password,
-      },
-      {
-        name: 'passwordConfirmation',
-        value: password,
-      },
-    ];
     await Helper.simulateValidSubmit({
       sut,
-      fieldsSubmit: fields,
+      fieldsSubmit: inputsValues(),
     });
     await Helper.simulateValidSubmit({
       sut,
-      fieldsSubmit: fields,
+      fieldsSubmit: inputsValues(),
     });
 
     expect(addAccountSpy.callsCount).toBe(1);
@@ -203,26 +189,18 @@ describe('SignUp Component', () => {
   test('Should not call AddAccount if form is invalid', async () => {
     const validationError = faker.random.words();
     const { sut, addAccountSpy } = makeSut({ validationError });
-    const password = faker.internet.userName();
-    const fields = [
-      {
-        name: 'name',
-        value: faker.internet.userName(),
-      },
-      {
-        name: 'email',
-        value: faker.internet.email(),
-      },
-      {
-        name: 'password',
-        value: password,
-      },
-      {
-        name: 'passwordConfirmation',
-        value: password,
-      },
-    ];
-    await Helper.simulateValidSubmit({ sut, fieldsSubmit: fields });
+    await Helper.simulateValidSubmit({ sut, fieldsSubmit: inputsValues() });
     expect(addAccountSpy.callsCount).toBe(0);
+  });
+
+  test('Should present error if AddAccount fails', async () => {
+    const { sut, addAccountSpy } = makeSut();
+    const error = new EmailInUseError();
+    jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(error);
+    await Helper.simulateValidSubmit({ sut, fieldsSubmit: inputsValues() });
+    await waitFor(() => {
+      Helper.testElementText(sut, 'main-error', error.message);
+    });
+    Helper.testChildCount(sut, 'error-wrap', 1);
   });
 });
