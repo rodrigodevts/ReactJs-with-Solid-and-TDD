@@ -30,16 +30,6 @@
       text-transform: uppercase;
     }
 
-    .buttonSubmit {
-      margin-top: 12px;
-
-      &:disabled {
-        color: $disabledColor;
-        background-color: $disabledBackground;
-        cursor: not-allowed;
-      }
-    }
-
     .createCountLink {
       text-align: center;
       text-decoration: underline;

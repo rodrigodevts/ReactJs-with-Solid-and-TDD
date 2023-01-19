@@ -39,6 +39,12 @@ button {
   padding: 15px 40px;
   cursor: pointer;
 
+  &:disabled {
+    color: $disabledColor;
+    background-color: $disabledBackground;
+    cursor: not-allowed;
+  }
+
   &:hover:not(:disabled) {
     filter: brightness(0.9);
   }

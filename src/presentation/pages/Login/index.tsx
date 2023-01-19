@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import LoginHeader from '@/presentation/components/login-header';
 import Input from '@/presentation/components/input';
-import Spinner from '@/presentation/components/spinner';
 import FormStatus from '@/presentation/components/form-status';
 import Footer from '@/presentation/components/footer';
+import { SubmitButton } from '@/presentation/components/submit-button';
 
 import { FormContext } from '@/presentation/contexts/formContext';
 
@@ -24,6 +24,7 @@ type LoginProps = {
 function Login({ validation, authentication, saveAccessToken }: LoginProps) {
   const [state, setState] = useState({
     isLoading: false,
+    isFormInvalid: true,
     email: '',
     password: '',
     emailError: '',
@@ -34,10 +35,13 @@ function Login({ validation, authentication, saveAccessToken }: LoginProps) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const emailError = validation.validate('email', state.email);
+    const passwordError = validation.validate('password', state.password);
     setState({
       ...state,
-      emailError: validation.validate('email', state.email),
-      passwordError: validation.validate('password', state.password),
+      emailError,
+      passwordError,
+      isFormInvalid: !!emailError || !!passwordError,
     });
   }, [state.email, state.password]);
 
@@ -47,7 +51,7 @@ function Login({ validation, authentication, saveAccessToken }: LoginProps) {
     event.preventDefault();
 
     try {
-      if (state.isLoading || state.emailError || state.passwordError) {
+      if (state.isLoading || state.isFormInvalid) {
         return;
       }
 
@@ -77,14 +81,7 @@ function Login({ validation, authentication, saveAccessToken }: LoginProps) {
             name="password"
             placeholder="Digite sua senha"
           />
-          <button
-            data-testid="button-submit"
-            className="buttonSubmit"
-            type="submit"
-            disabled={!!(state.emailError || state.passwordError)}
-          >
-            {state.isLoading ? <Spinner /> : 'Entrar'}
-          </button>
+          <SubmitButton>Entrar</SubmitButton>
           <FormStatus />
           <Link data-testid="signup" to="/signup" className="createCountLink">
             Criar conta

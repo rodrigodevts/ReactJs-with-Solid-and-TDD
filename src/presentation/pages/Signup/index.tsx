@@ -7,11 +7,11 @@ import { FormContext } from '@/presentation/contexts/formContext';
 
 import './signup-styles.scss';
 
-import Spinner from '@/presentation/components/spinner';
 import { Validation } from '@/presentation/protocols/validation';
 import { AddAccount } from '@/domain/useCases/add-account';
 import { SaveAccessToken } from '@/domain/useCases/save-access-token';
 import { Link, useNavigate } from 'react-router-dom';
+import { SubmitButton } from '@/presentation/components/submit-button';
 
 type SignUpProps = {
   validation: Validation;
@@ -22,6 +22,7 @@ type SignUpProps = {
 function Signup({ validation, addAccount, saveAccessTokenMock }: SignUpProps) {
   const [state, setState] = useState({
     isLoading: false,
+    isFormInvalid: true,
     name: '',
     nameError: '',
     email: '',
@@ -36,15 +37,24 @@ function Signup({ validation, addAccount, saveAccessTokenMock }: SignUpProps) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const nameError = validation.validate('name', state.name);
+    const emailError = validation.validate('email', state.email);
+    const passwordError = validation.validate('password', state.password);
+    const passwordConfirmationError = validation.validate(
+      'passwordConfirmation',
+      state.passwordConfirmation
+    );
     setState({
       ...state,
-      nameError: validation.validate('name', state.name),
-      emailError: validation.validate('email', state.email),
-      passwordError: validation.validate('password', state.password),
-      passwordConfirmationError: validation.validate(
-        'passwordConfirmation',
-        state.passwordConfirmation
-      ),
+      nameError,
+      emailError,
+      passwordError,
+      passwordConfirmationError,
+      isFormInvalid:
+        !!nameError ||
+        !!emailError ||
+        !!passwordError ||
+        !!passwordConfirmationError,
     });
   }, [state.name, state.email, state.password, state.passwordConfirmation]);
 
@@ -53,13 +63,7 @@ function Signup({ validation, addAccount, saveAccessTokenMock }: SignUpProps) {
   ): Promise<void> => {
     event.preventDefault();
     try {
-      if (
-        state.isLoading ||
-        state.nameError ||
-        state.emailError ||
-        state.passwordError ||
-        state.passwordConfirmationError
-      ) {
+      if (state.isLoading || state.isFormInvalid) {
         return;
       }
       setState({ ...state, isLoading: true });
@@ -99,19 +103,7 @@ function Signup({ validation, addAccount, saveAccessTokenMock }: SignUpProps) {
             name="passwordConfirmation"
             placeholder="Repita sua senha"
           />
-          <button
-            data-testid="submit"
-            disabled={
-              !!state.nameError ||
-              !!state.emailError ||
-              !!state.passwordError ||
-              !!state.passwordConfirmationError
-            }
-            className="buttonSubmit"
-            type="submit"
-          >
-            {state.isLoading ? <Spinner /> : 'Cadastrar'}
-          </button>
+          <SubmitButton>Cadastrar</SubmitButton>
           <FormStatus />
           <Link data-testid="login" to="/login" className="createCountLink">
             Voltar para o Login
