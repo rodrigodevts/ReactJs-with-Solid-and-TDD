@@ -4,7 +4,13 @@ import { AddAccountSpy } from '@/presentation/test/mock-add-account';
 import { SaveAccessTokenMock } from '@/presentation/test/mock-save-access-token';
 import { ValidationStub } from '@/presentation/test/mock-validation';
 import { faker } from '@faker-js/faker';
-import { cleanup, render, RenderResult, waitFor } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  RenderResult,
+  waitFor,
+} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import Signup from '.';
@@ -239,5 +245,13 @@ describe('SignUp Component', () => {
       });
       Helper.testChildCount(sut, 'error-wrap', 1);
     });
+  });
+
+  test('Should go to login page', () => {
+    const { sut } = makeSut();
+    const loginLink = sut.getByTestId('login');
+    fireEvent.click(loginLink);
+    expect(history.index).toBe(1);
+    expect(history.location.pathname).toBe('/login');
   });
 });
