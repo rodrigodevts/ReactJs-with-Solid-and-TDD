@@ -47,7 +47,13 @@ function Signup({ validation, addAccount }: SignUpProps) {
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
-    if (state.isLoading) {
+    if (
+      state.isLoading ||
+      state.nameError ||
+      state.emailError ||
+      state.passwordError ||
+      state.passwordConfirmationError
+    ) {
       return;
     }
     setState({ ...state, isLoading: true });
