@@ -10,13 +10,16 @@ import './signup-styles.scss';
 import Spinner from '@/presentation/components/spinner';
 import { Validation } from '@/presentation/protocols/validation';
 import { AddAccount } from '@/domain/useCases/add-account';
+import { SaveAccessToken } from '@/domain/useCases/save-access-token';
+import { useNavigate } from 'react-router-dom';
 
 type SignUpProps = {
   validation: Validation;
   addAccount: AddAccount;
+  saveAccessTokenMock: SaveAccessToken;
 };
 
-function Signup({ validation, addAccount }: SignUpProps) {
+function Signup({ validation, addAccount, saveAccessTokenMock }: SignUpProps) {
   const [state, setState] = useState({
     isLoading: false,
     name: '',
@@ -29,6 +32,8 @@ function Signup({ validation, addAccount }: SignUpProps) {
     passwordConfirmationError: '',
     mainError: '',
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setState({
@@ -58,12 +63,15 @@ function Signup({ validation, addAccount }: SignUpProps) {
         return;
       }
       setState({ ...state, isLoading: true });
-      await addAccount.add({
+      const account = await addAccount.add({
         name: state.name,
         email: state.email,
         password: state.password,
         passwordConfirmation: state.passwordConfirmation,
       });
+
+      await saveAccessTokenMock.save(account.token);
+      navigate('/', { replace: true });
     } catch (error) {
       setState({
         ...state,
