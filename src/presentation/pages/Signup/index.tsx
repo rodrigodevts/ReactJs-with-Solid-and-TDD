@@ -11,7 +11,7 @@ import Spinner from '@/presentation/components/spinner';
 import { Validation } from '@/presentation/protocols/validation';
 import { AddAccount } from '@/domain/useCases/add-account';
 import { SaveAccessToken } from '@/domain/useCases/save-access-token';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 type SignUpProps = {
   validation: Validation;
@@ -113,7 +113,9 @@ function Signup({ validation, addAccount, saveAccessTokenMock }: SignUpProps) {
             {state.isLoading ? <Spinner /> : 'Cadastrar'}
           </button>
           <FormStatus />
-          <span className="createCountLink">Voltar para o Login</span>
+          <Link data-testid="login" to="/login" className="createCountLink">
+            Voltar para o Login
+          </Link>
         </form>
       </FormContext.Provider>
       <Footer />
