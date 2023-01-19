@@ -1,32 +1,48 @@
 import { EmailInUseError } from '@/domain/errors/email-in-use-error';
 import * as Helper from '@/presentation/test/form-helper';
 import { AddAccountSpy } from '@/presentation/test/mock-add-account';
+import { SaveAccessTokenMock } from '@/presentation/test/mock-save-access-token';
 import { ValidationStub } from '@/presentation/test/mock-validation';
 import { faker } from '@faker-js/faker';
 import { cleanup, render, RenderResult, waitFor } from '@testing-library/react';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 import Signup from '.';
 
 type SutTypes = {
   sut: RenderResult;
   addAccountSpy: AddAccountSpy;
+  saveAccessTokenMock: SaveAccessTokenMock;
 };
 
 type SutParams = {
   validationError: string;
 };
 
+const history = createMemoryHistory({
+  initialEntries: ['/signup'],
+});
+
 const makeSut = (params?: SutParams): SutTypes => {
   const validationSub = new ValidationStub();
   validationSub.errorMessage = params?.validationError;
   const addAccountSpy = new AddAccountSpy();
+  const saveAccessTokenMock = new SaveAccessTokenMock();
 
   const sut = render(
-    <Signup validation={validationSub} addAccount={addAccountSpy} />
+    <Router location={history.location} navigator={history}>
+      <Signup
+        validation={validationSub}
+        addAccount={addAccountSpy}
+        saveAccessTokenMock={saveAccessTokenMock}
+      />
+    </Router>
   );
 
   return {
     sut,
     addAccountSpy,
+    saveAccessTokenMock,
   };
 };
 
@@ -202,5 +218,13 @@ describe('SignUp Component', () => {
       Helper.testElementText(sut, 'main-error', error.message);
     });
     Helper.testChildCount(sut, 'error-wrap', 1);
+  });
+
+  test('Should call saveAccessToken on success', async () => {
+    const { sut, addAccountSpy, saveAccessTokenMock } = makeSut();
+    await Helper.simulateValidSubmit({ sut, fieldsSubmit: inputsValues() });
+    expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.token);
+    expect(history.index).toBe(0);
+    expect(history.location.pathname).toBe('/');
   });
 });
