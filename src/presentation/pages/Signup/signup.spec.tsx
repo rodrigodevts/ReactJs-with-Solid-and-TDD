@@ -199,4 +199,30 @@ describe('SignUp Component', () => {
 
     expect(addAccountSpy.callsCount).toBe(1);
   });
+
+  test('Should not call AddAccount if form is invalid', async () => {
+    const validationError = faker.random.words();
+    const { sut, addAccountSpy } = makeSut({ validationError });
+    const password = faker.internet.userName();
+    const fields = [
+      {
+        name: 'name',
+        value: faker.internet.userName(),
+      },
+      {
+        name: 'email',
+        value: faker.internet.email(),
+      },
+      {
+        name: 'password',
+        value: password,
+      },
+      {
+        name: 'passwordConfirmation',
+        value: password,
+      },
+    ];
+    await Helper.simulateValidSubmit({ sut, fieldsSubmit: fields });
+    expect(addAccountSpy.callsCount).toBe(0);
+  });
 });
