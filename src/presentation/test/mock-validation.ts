@@ -3,7 +3,7 @@ import { Validation } from '../protocols/validation';
 class ValidationStub implements Validation {
   errorMessage: string;
 
-  validate(fieldName: string, fieldValue: string) {
+  validate(fieldName: string, Input: object) {
     return this.errorMessage;
   }
 }
