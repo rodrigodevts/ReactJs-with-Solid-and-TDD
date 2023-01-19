@@ -52,15 +52,6 @@ const makeSut = (params?: SutParams): SutTypes => {
   };
 };
 
-const testElementText = (
-  sut: RenderResult,
-  fieldName: string,
-  text: string
-): void => {
-  const element = sut.getByTestId(fieldName);
-  expect(element.textContent).toBe(text);
-};
-
 describe('Login component', () => {
   afterEach(cleanup);
 
@@ -207,10 +198,10 @@ describe('Login component', () => {
       ],
     });
     await waitFor(() => {
-      testElementText(sut, 'main-error', error.message);
+      Helper.testElementText(sut, 'main-error', error.message);
     });
     Helper.testChildCount(sut, 'error-wrap', 1);
-    testElementText(sut, 'button-submit', 'Entrar');
+    Helper.testElementText(sut, 'button-submit', 'Entrar');
   });
 
   test('Should call SaveAccessToken on success', async () => {
@@ -254,10 +245,10 @@ describe('Login component', () => {
         ],
       });
       await waitFor(() => {
-        testElementText(sut, 'main-error', error.message);
+        Helper.testElementText(sut, 'main-error', error.message);
       });
       Helper.testChildCount(sut, 'error-wrap', 1);
-      testElementText(sut, 'button-submit', 'Entrar');
+      Helper.testElementText(sut, 'button-submit', 'Entrar');
     });
   });
 

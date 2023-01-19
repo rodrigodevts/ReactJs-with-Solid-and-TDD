@@ -63,6 +63,15 @@ const testElementExists = (sut: RenderResult, fieldName: string): void => {
   expect(element).toBeTruthy();
 };
 
+const testElementText = (
+  sut: RenderResult,
+  fieldName: string,
+  text: string
+): void => {
+  const element = sut.getByTestId(fieldName);
+  expect(element.textContent).toBe(text);
+};
+
 export {
   testChildCount,
   testButtonIsDisabled,
@@ -70,4 +79,5 @@ export {
   populateInputField,
   simulateValidSubmit,
   testElementExists,
+  testElementText,
 };
