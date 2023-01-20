@@ -10,6 +10,10 @@ export default {
     '!**/*.d.ts',
   ],
   coverageDirectory: 'coverage',
+  testPathIgnorePatterns: [
+    '<rootDir>/node_modules/',
+    '<rootDir>/src/main/test/cypress',
+  ],
   coverageProvider: 'v8',
   roots: ['<rootDir>/src'],
   testEnvironment: 'jsdom',

@@ -15,7 +15,6 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
     "baseUrl": "src",
-    // "rootDir": "src",
     "paths": {
       "@/*": [
         "*"
@@ -26,7 +25,8 @@
     "src",
     "jest.config.ts",
     ".eslintrc.js",
-    "vite.config.ts"
+    "vite.config.ts",
+    "cypress.config.ts"
   ],
   "references": [
     {
