@@ -13,6 +13,7 @@ export default {
   testPathIgnorePatterns: [
     '<rootDir>/node_modules/',
     '<rootDir>/src/main/test/cypress',
+    '<rootDir>/src/main/test/cypress/tsconfig.json',
   ],
   coverageProvider: 'v8',
   roots: ['<rootDir>/src'],

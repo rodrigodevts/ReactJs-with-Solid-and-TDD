@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
     jest: true,
+    "cypress/globals": true,
   },
   extends: [
     'plugin:react/recommended',
@@ -10,6 +11,7 @@ module.exports = {
     "prettier",
     "plugin:prettier/recommended",
     'plugin:react/jsx-runtime',
+    "plugin:cypress/recommended"
   ],
   overrides: [
   ],
@@ -21,6 +23,7 @@ module.exports = {
   plugins: [
     'react',
     'prettier',
+    "cypress"
   ],
   rules: {
     "prettier/prettier": ["error", {
