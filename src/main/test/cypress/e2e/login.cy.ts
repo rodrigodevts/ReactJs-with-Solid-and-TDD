@@ -55,12 +55,29 @@ describe('Login', () => {
     cy.getByTestId('password').focus().type(faker.internet.password());
     cy.getByTestId('button-submit').click();
     cy.getByTestId('button-submit').getByTestId('spinner').should('exist');
-    cy.getByTestId('main-error')
+    cy.getByTestId('error-wrap')
+      .getByTestId('main-error')
       .should('not.exist')
       .getByTestId('spinner')
       .should('not.exist')
       .getByTestId('main-error')
       .should('contain.text', 'Credenciais inválidas');
     cy.url().should('eq', `${baseUrl}/login`);
+  });
+
+  it('Should present save accessToken if valid credentials are provided', () => {
+    cy.getByTestId('email').focus().type('loli@gmail.com');
+    cy.getByTestId('password').focus().type('123456');
+    cy.getByTestId('button-submit').click();
+    cy.getByTestId('button-submit').getByTestId('spinner').should('exist');
+    cy.getByTestId('error-wrap')
+      .getByTestId('main-error')
+      .should('not.exist')
+      .getByTestId('spinner')
+      .should('not.exist');
+    cy.url().should('eq', `${baseUrl}/`);
+    cy.window().then((window) => {
+      assert.isOk(window.localStorage.getItem('react-solid@accessToken'));
+    });
   });
 });
