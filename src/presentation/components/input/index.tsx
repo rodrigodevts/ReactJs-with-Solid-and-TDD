@@ -11,13 +11,19 @@ interface Props
 const Input: React.FC<Props> = (props: Props) => {
   const { state, setState } = useContext(FormContext);
   const error = state[`${props.name}Error`];
+  console.log(error);
 
   return (
-    <div className="inputWrap">
+    <div
+      data-testid={`${props.name}-wrap`}
+      className="inputWrap"
+      data-status={error ? 'invalid' : 'valid'}
+    >
       <input
         {...props}
         placeholder=" "
         data-testid={props.name}
+        title={error}
         readOnly
         onFocus={(e) => (e.target.readOnly = false)}
         onChange={(e) =>
@@ -27,14 +33,9 @@ const Input: React.FC<Props> = (props: Props) => {
           })
         }
       />
-      <label>{props.placeholder}</label>
-      <span
-        data-testid={`${props.name}-status`}
-        title={error || 'Tudo certo!'}
-        className="status"
-      >
-        {error ? '🛑' : '✅'}
-      </span>
+      <label data-testid={`${props.name}-label`} title={error}>
+        {props.placeholder}
+      </label>
     </div>
   );
 };

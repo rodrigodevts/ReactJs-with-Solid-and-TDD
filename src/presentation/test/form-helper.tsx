@@ -22,11 +22,16 @@ const testButtonIsDisabled = (
 const testStatusForField = (
   sut: RenderResult,
   fieldName: string,
-  validationError?: string
+  validationError: string = ''
 ): void => {
-  const fieldStatus = sut.getByTestId(`${fieldName}-status`);
-  expect(fieldStatus.title).toBe(validationError || 'Tudo certo!');
-  expect(fieldStatus.textContent).toBe(validationError ? '🛑' : '✅');
+  const fieldWrap = sut.getByTestId(`${fieldName}-wrap`);
+  const field = sut.getByTestId(fieldName);
+  const fieldLabel = sut.getByTestId(`${fieldName}-label`);
+  expect(fieldWrap.getAttribute('data-status')).toBe(
+    validationError ? 'invalid' : 'valid'
+  );
+  expect(field.title).toBe(validationError);
+  expect(fieldLabel.title).toBe(validationError);
 };
 
 const populateInputField = (
