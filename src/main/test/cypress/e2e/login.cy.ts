@@ -101,8 +101,8 @@ describe('Login', () => {
       delay: 500,
     });
     cy.getByTestId('email').focus().type(faker.internet.email());
-    cy.getByTestId('password').focus().type(faker.internet.password());
-    cy.getByTestId('button-submit').click().getByTestId('spinner').should('exist')
+    cy.getByTestId('password').focus().type(faker.internet.password()).type('{enter}');
+    cy.getByTestId('spinner').should('exist');
     cy.getByTestId('error-wrap')
       .getByTestId('main-error')
       .should('not.exist')
@@ -133,7 +133,7 @@ describe('Login', () => {
     });
   });
 
-  it.only('Should prevent multiple submits', () => {
+  it('Should prevent multiple submits', () => {
     cy.intercept('POST', /sessions/, {
       statusCode: 200,
       body: {
