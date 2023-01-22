@@ -92,6 +92,27 @@ describe('Login', () => {
     cy.url().should('eq', `${baseUrl}/login`);
   });
 
+  it('Should present UnexpectedError if invalid data is returned', () => {
+    cy.intercept('POST', /sessions/, {
+      statusCode: 200,
+      body: {
+        invalidPropertyReturned: faker.random.words(),
+      },
+      delay: 500,
+    });
+    cy.getByTestId('email').focus().type(faker.internet.email());
+    cy.getByTestId('password').focus().type(faker.internet.password());
+    cy.getByTestId('button-submit').click().getByTestId('spinner').should('exist')
+    cy.getByTestId('error-wrap')
+      .getByTestId('main-error')
+      .should('not.exist')
+      .getByTestId('spinner')
+      .should('not.exist')
+      .getByTestId('main-error')
+      .should('contain.text', 'Algo de errado aconteceu. Tente novamente em breve.');
+    cy.url().should('eq', `${baseUrl}/login`);
+  });
+
   it('Should present save accessToken if valid credentials are provided', () => {
     cy.intercept('POST', /sessions/, {
       statusCode: 200,
@@ -112,24 +133,17 @@ describe('Login', () => {
     });
   });
 
-  it('Should present UnexpectedError if invalid data is returned', () => {
+  it.only('Should prevent multiple submits', () => {
     cy.intercept('POST', /sessions/, {
       statusCode: 200,
       body: {
-        invalidPropertyReturned: faker.random.words(),
+        token: faker.random.words(),
       },
-      delay: 500,
-    });
+    }).as('request');
     cy.getByTestId('email').focus().type(faker.internet.email());
     cy.getByTestId('password').focus().type(faker.internet.password());
-    cy.getByTestId('button-submit').click().getByTestId('spinner').should('exist')
-    cy.getByTestId('error-wrap')
-      .getByTestId('main-error')
-      .should('not.exist')
-      .getByTestId('spinner')
-      .should('not.exist')
-      .getByTestId('main-error')
-      .should('contain.text', 'Algo de errado aconteceu. Tente novamente em breve.');
-    cy.url().should('eq', `${baseUrl}/login`);
+    cy.getByTestId('button-submit').dblclick();
+
+    cy.get('@request.all').should('have.length', 1);
   });
 });
