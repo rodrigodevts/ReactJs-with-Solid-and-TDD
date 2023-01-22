@@ -133,17 +133,14 @@ describe('Login', () => {
     });
   });
 
-  it('Should prevent multiple submits', () => {
+  it('Should not call submit if form is invalid', () => {
     cy.intercept('POST', /sessions/, {
       statusCode: 200,
       body: {
         token: faker.random.words(),
       },
     }).as('request');
-    cy.getByTestId('email').focus().type(faker.internet.email());
-    cy.getByTestId('password').focus().type(faker.internet.password());
-    cy.getByTestId('button-submit').dblclick();
-
-    cy.get('@request.all').should('have.length', 1);
+    cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}')
+    cy.get('@request.all').should('have.length', 0);
   });
 });
