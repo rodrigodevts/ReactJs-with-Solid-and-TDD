@@ -11,7 +11,6 @@ interface Props
 const Input: React.FC<Props> = (props: Props) => {
   const { state, setState } = useContext(FormContext);
   const error = state[`${props.name}Error`];
-  console.log(error);
 
   return (
     <div
