@@ -85,4 +85,15 @@ describe('SignUp', () => {
 		Helper.testMainError('Algo de errado aconteceu. Tente novamente em breve.');
 		Helper.testUrl('/signup');
 	});
+
+	it('Should present save accessToken if valid credentials are provided', () => {
+		Http.mockOk();
+		simulateValidSubmit();
+		cy.getByTestId('main-error')
+			.should('not.exist')
+			.getByTestId('spinner')
+			.should('not.exist');
+		Helper.testUrl('/');
+		Helper.testLocalStorageItem('react-solid@accessToken');
+	});
 });
