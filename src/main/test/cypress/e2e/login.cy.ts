@@ -2,9 +2,13 @@ import { faker } from '@faker-js/faker';
 import * as Helper from '../support/form-helper';
 import * as Http from '../support/login-mocks';
 
-const simulateValidSubmit = (): void => {
+const populateFields = (): void => {
   cy.getByTestId('email').focus().type(faker.internet.email());
   cy.getByTestId('password').focus().type(faker.internet.password());
+};
+
+const simulateValidSubmit = (): void => {
+  populateFields();
   cy.getByTestId('button-submit').click();
 };
 
@@ -36,12 +40,7 @@ describe('Login', () => {
   });
 
   it('Should present valid state if form is valid', () => {
-    cy.getByTestId('email').focus().type(faker.internet.email());
-    Helper.testInputStatus('email');
-
-    cy.getByTestId('password').focus().type(faker.internet.password());
-    Helper.testInputStatus('password');
-
+    populateFields();
     cy.getByTestId('button-submit').should('not.have.attr', 'disabled');
     cy.getByTestId('error-wrap').should('not.have.descendants');
   });
