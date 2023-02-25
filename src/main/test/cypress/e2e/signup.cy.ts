@@ -2,12 +2,16 @@ import { faker } from '@faker-js/faker';
 import * as Helper from '../support/form-helper';
 import * as Http from '../support/signup-mocks';
 
-const simulateValidSubmit = (): void => {
+const populateFields = (): void => {
 	cy.getByTestId('name').focus().type(faker.internet.userName());
 	cy.getByTestId('email').focus().type(faker.internet.email());
 	const password = faker.internet.password();
 	cy.getByTestId('password').focus().type(password);
 	cy.getByTestId('passwordConfirmation').focus().type(password);
+};
+
+const simulateValidSubmit = (): void => {
+	populateFields();
 	cy.getByTestId('button-submit').click();
 };
 
@@ -48,19 +52,7 @@ describe('SignUp', () => {
 	});
 
 	it('Should present valid state if form is valid', () => {
-		cy.getByTestId('name').focus().type(faker.internet.userName());
-		Helper.testInputStatus('name');
-
-		cy.getByTestId('email').focus().type(faker.internet.email());
-		Helper.testInputStatus('email');
-
-		const password = faker.internet.password();
-		cy.getByTestId('password').focus().type(password);
-		Helper.testInputStatus('password');
-
-		cy.getByTestId('passwordConfirmation').focus().type(password);
-		Helper.testInputStatus('passwordConfirmation');
-
+		populateFields();
 		cy.getByTestId('button-submit').should('not.have.attr', 'disabled');
 		cy.getByTestId('error-wrap').should('not.have.descendants');
 	});
@@ -95,5 +87,11 @@ describe('SignUp', () => {
 			.should('not.exist');
 		Helper.testUrl('/');
 		Helper.testLocalStorageItem('react-solid@accessToken');
+	});
+
+	it('Should not call submit if form is invalid', () => {
+		Http.mockOk();
+		cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}')
+		Helper.testHttpCallsCount(0);
 	});
 });
